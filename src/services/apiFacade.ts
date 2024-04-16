@@ -3,7 +3,7 @@ import Product from '../interfaces/Product'
 import { handleHttpErrors, makeOptions } from './fetchUtils'
 
 export async function getProducts(): Promise<Product[]> {
-    const options = makeOptions('GET', null, undefined)
+    const options = makeOptions('GET', null)
 
     const response = await fetch(`${API_URL}/products`, options)
     const data = await handleHttpErrors(response)

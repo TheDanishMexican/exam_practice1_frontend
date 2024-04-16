@@ -5,15 +5,34 @@ import '../styling/productList.css'
 
 export default function ProductList() {
     const [products, setProducts] = useState<Product[]>([])
+    const [isLoading, setLoading] = useState(false)
+    const [error, setError] = useState<string | null>(null) // Initializing error state as null
 
     useEffect(() => {
-        async function getData() {
-            const products = await getProducts()
-            setProducts(products)
+        async function fetchData() {
+            try {
+                setLoading(true) // Start loading
+                setError(null) // Clear previous errors
+                const fetchedProducts = await getProducts() // Fetch products
+                setProducts(fetchedProducts) // Set products on successful fetch
+            } catch (err) {
+                setError('Failed to fetch products') // Set error message on catch
+                console.error(err) // Also log the error to the console
+            } finally {
+                setLoading(false) // End loading whether or not there was an error
+            }
         }
-        getData()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+
+        fetchData()
+    }, []) // Empty dependency array means this effect runs only once after the initial render
+
+    if (isLoading) {
+        return <div>Loading...</div> // Show loading message while data is loading
+    }
+
+    if (error) {
+        return <div>Error: {error}</div> // Show error message if there is an error
+    }
 
     console.log(products)
 

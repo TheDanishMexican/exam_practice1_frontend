@@ -6,7 +6,7 @@ export function makeOptions(
 ): RequestInit {
     // Initialize the options object with the HTTP method and default headers.
     // These headers ensure the request and response are treated as JSON.
-    const opts: RequestInit = {
+    const options: RequestInit = {
         method: method,
         headers: {
             'Content-type': 'application/json', // Indicates the body format to be JSON
@@ -17,29 +17,29 @@ export function makeOptions(
 
     // If a body is provided (not null), convert it to a JSON string and add it to the request options.
     if (body) {
-        opts.body = JSON.stringify(body)
+        options.body = JSON.stringify(body)
     }
 
     // Return the fully constructed options object.
-    return opts
+    return options
 }
 
 // This function checks the HTTP response status and handles errors or returns parsed JSON.
-export async function handleHttpErrors(res: Response) {
+export async function handleHttpErrors(response: Response) {
     // If the response indicates a failure (i.e., the status code is not in the 2xx range),
     // it processes and throws an error.
-    if (!res.ok) {
+    if (!response.ok) {
         // Parse the JSON from the response to get detailed error information.
-        const errorResponse = await parseJSON(res)
+        const errorResponse = await parseJSON(response)
         // Extract the message from the error response or use a default message if not available.
-        const msg = errorResponse.message
+        const message = errorResponse.message
             ? errorResponse.message
             : 'No details provided'
         // Throw a new error with the extracted message.
-        throw new Error(msg)
+        throw new Error(message)
     }
     // If the response is OK, parse and return the JSON data from the response.
-    return parseJSON(res)
+    return parseJSON(response)
 }
 
 // Helper function to safely parse JSON from a response.
