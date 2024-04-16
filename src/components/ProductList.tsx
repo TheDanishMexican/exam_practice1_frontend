@@ -19,11 +19,10 @@ export default function ProductList() {
 
     return (
         <>
-            <h1>This is the product list</h1>
             <div className="product-list-container">
                 <table className="product-list-table">
                     <thead>
-                        <tr>
+                        <tr className="table-row">
                             <th>Name</th>
                             <th>Price in DKK</th>
                             <th>Weight in grams</th>
@@ -33,15 +32,19 @@ export default function ProductList() {
                     </thead>
                     <tbody>
                         {products.map((product) => (
-                            <tr key={product.id}>
+                            <tr className="table-row" key={product.id}>
                                 <td>{product.name}</td>
                                 <td>{product.price}</td>
                                 <td>{product.weightInGrams}</td>
                                 <td>
-                                    <button>Delete</button>
+                                    <button className="table-button">
+                                        Delete
+                                    </button>
                                 </td>
                                 <td>
-                                    <button>Edit</button>
+                                    <button className="table-button">
+                                        Edit
+                                    </button>
                                 </td>
                             </tr>
                         ))}
