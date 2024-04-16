@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
-import { getProducts } from '../services/apiFacade'
+import { deleteProduct, getProducts } from '../services/apiFacade'
 import Product from '../interfaces/Product'
+import ProductItem from './ProductItem'
 import '../styling/productList.css'
 
 export default function ProductList() {
@@ -22,9 +23,12 @@ export default function ProductList() {
                 setLoading(false) // End loading whether or not there was an error
             }
         }
-
         fetchData()
-    }, []) // Empty dependency array means this effect runs only once after the initial render
+    }, [])
+
+    function handleDeleteProduct(id: number) {
+        deleteProduct(id)
+    }
 
     if (isLoading) {
         return <div>Loading...</div> // Show loading message while data is loading
@@ -51,21 +55,11 @@ export default function ProductList() {
                     </thead>
                     <tbody>
                         {products.map((product) => (
-                            <tr className="table-row" key={product.id}>
-                                <td>{product.name}</td>
-                                <td>{product.price}</td>
-                                <td>{product.weightInGrams}</td>
-                                <td>
-                                    <button className="table-button">
-                                        Delete
-                                    </button>
-                                </td>
-                                <td>
-                                    <button className="table-button">
-                                        Edit
-                                    </button>
-                                </td>
-                            </tr>
+                            <ProductItem
+                                key={product.id}
+                                product={product}
+                                handleDeleteProduct={handleDeleteProduct}
+                            />
                         ))}
                     </tbody>
                 </table>

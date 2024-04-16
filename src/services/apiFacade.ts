@@ -10,3 +10,9 @@ export async function getProducts(): Promise<Product[]> {
 
     return data
 }
+
+export async function deleteProduct(id: number): Promise<void> {
+    const options = makeOptions('DELETE', null)
+
+    await fetch(`${API_URL}/products/${id}`, options)
+}
