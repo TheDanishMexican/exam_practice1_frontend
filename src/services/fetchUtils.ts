@@ -1,41 +1,55 @@
-/**
- * Utility Method to create options for a fetch call
- * @param method GET, POST, PUT, DELETE
- * @param body  The request body (only relevant for POST and PUT)
- * @returns
- */
-
+// This function creates and returns options for a fetch request.
 export function makeOptions(
-    method: string,
-    body: object | null,
-    headers: object = {}
+    method: string, // HTTP method (e.g., 'GET', 'POST')
+    body: object | null, // Payload to be sent with the request, null if no body
+    headers: object = {} // Additional headers to be included in the request
 ): RequestInit {
+    // Initialize the options object with the HTTP method and default headers.
+    // These headers ensure the request and response are treated as JSON.
     const opts: RequestInit = {
         method: method,
         headers: {
-            'Content-type': 'application/json',
-            Accept: 'application/json',
-            ...headers,
+            'Content-type': 'application/json', // Indicates the body format to be JSON
+            Accept: 'application/json', // Indicates that the response should be JSON
+            ...headers, // Spread any additional headers provided into the headers object
         },
     }
+
+    // If a body is provided (not null), convert it to a JSON string and add it to the request options.
     if (body) {
         opts.body = JSON.stringify(body)
     }
 
+    // Return the fully constructed options object.
     return opts
 }
 
-/**
- * Utility Method to handle http-errors returned as a JSON-response with fetch
- * Meant to be used in the first .then() clause after a fetch-call
- */
+// This function checks the HTTP response status and handles errors or returns parsed JSON.
 export async function handleHttpErrors(res: Response) {
+    // If the response indicates a failure (i.e., the status code is not in the 2xx range),
+    // it processes and throws an error.
     if (!res.ok) {
-        const errorResponse = await res.json()
+        // Parse the JSON from the response to get detailed error information.
+        const errorResponse = await parseJSON(res)
+        // Extract the message from the error response or use a default message if not available.
         const msg = errorResponse.message
             ? errorResponse.message
             : 'No details provided'
+        // Throw a new error with the extracted message.
         throw new Error(msg)
     }
-    return res.json()
+    // If the response is OK, parse and return the JSON data from the response.
+    return parseJSON(res)
+}
+
+// Helper function to safely parse JSON from a response.
+async function parseJSON(response: Response) {
+    try {
+        // Attempt to parse the response body as JSON.
+        return await response.json()
+    } catch (error) {
+        // If parsing fails (e.g., if the response body is not valid JSON),
+        // throw a new error indicating this issue.
+        throw new Error('Failed to parse response')
+    }
 }
