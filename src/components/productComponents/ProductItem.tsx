@@ -1,5 +1,5 @@
-import { useProductContext } from '../contexts/ProductsContext'
-import { ProductItemProps } from '../interfaces/ProductItemProps'
+import { useProductContext } from '../../contexts/ProductsContext'
+import { ProductItemProps } from '../../interfaces/props/ProductItemProps'
 
 export default function ProductItem({
     product,

@@ -1,6 +1,8 @@
 import { Route, Routes, Navigate } from 'react-router-dom'
 import ProductPage from './pages/ProductPage'
 import { ProductProvider } from './contexts/ProductsContext'
+import DeliveryPage from './pages/DeliveryPage'
+import { DeliveriesProvider } from './contexts/DeliveriesContext'
 // Import the ProductProvider
 
 export default function App() {
@@ -15,14 +17,13 @@ export default function App() {
                 }
             />
             <Route
-                path="/products"
+                path="/deliveries"
                 element={
-                    <ProductProvider>
-                        <ProductPage />
-                    </ProductProvider>
+                    <DeliveriesProvider>
+                        <DeliveryPage />
+                    </DeliveriesProvider>
                 }
             />
-
             <Route path="*" element={<Navigate to="/" />} />
         </Routes>
     )

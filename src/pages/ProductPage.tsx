@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import CreateProductForm from '../components/forms/CreateProductForm'
-import ProductList from '../components/ProductList'
+import CreateProductForm from '../components/productComponents/CreateProductForm'
+import ProductList from '../components/productComponents/ProductList'
 import '../styling/productPage.css'
 import SearchBar from '../components/SearchBar'
 import { useProductContext } from '../contexts/ProductsContext'
+import NavBar from '../components/NavBar'
 
 export default function ProductPage() {
     const { products } = useProductContext()
@@ -26,6 +27,7 @@ export default function ProductPage() {
     return (
         <>
             <div className="product-page-container">
+                <NavBar />
                 <div className="product-page-header">
                     <h1 className="product-page-h1">Product page</h1>
                     <SearchBar setSearchInput={setSearchInput} />

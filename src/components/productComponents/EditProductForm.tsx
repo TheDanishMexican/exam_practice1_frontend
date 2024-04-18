@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import '../../styling/editProductForm.css'
-import { EditProductFormProps } from '../../interfaces/EditProductFormProps'
+import { EditProductFormProps } from '../../interfaces/props/EditProductFormProps'
 import { useProductContext } from '../../contexts/ProductsContext'
 import Product from '../../interfaces/Product'
 

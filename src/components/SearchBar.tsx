@@ -7,7 +7,7 @@ export default function SearchBar({
         <div className="search-bar-container">
             <input
                 type="text"
-                placeholder="Search for products..."
+                placeholder="Search here..."
                 onChange={(e) => setSearchInput(e.target.value)}
             />
         </div>

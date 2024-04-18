@@ -4,9 +4,9 @@ import {
     deleteProductApi,
     getProductsApi,
     updateProductApi,
-} from '../services/apiFacade' // Assuming you have a service for API calls
+} from '../services/apiFacadeProducts' // Assuming you have a service for API calls
 import Product from '../interfaces/Product'
-import { ProductContextValue } from '../interfaces/ProductContextValue'
+import { ProductContextValue } from '../interfaces/props/ProductContextValue'
 
 const ProductContext = createContext<ProductContextValue>({
     products: [],
@@ -34,7 +34,7 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
     const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
-        const fetchProducts = async () => {
+        async function fetchProducts() {
             setLoading(true)
             try {
                 const fetchedProducts: Product[] = await getProductsApi()

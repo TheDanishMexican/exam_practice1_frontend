@@ -1,9 +1,9 @@
 import ProductItem from './ProductItem'
-import '../styling/productList.css'
-import { useProductContext } from '../contexts/ProductsContext'
+import '../../styling/productList.css'
+import { useProductContext } from '../../contexts/ProductsContext'
 import { useState } from 'react'
-import Product from '../interfaces/Product'
-import { EditProductForm } from './forms/EditProductForm'
+import Product from '../../interfaces/Product'
+import { EditProductForm } from './EditProductForm'
 
 export default function ProductList({
     filteredProducts,
