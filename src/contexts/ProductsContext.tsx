@@ -3,6 +3,7 @@ import {
     createProductApi,
     deleteProductApi,
     getProductsApi,
+    updateProductApi,
 } from '../services/apiFacade' // Assuming you have a service for API calls
 import Product from '../interfaces/Product'
 import { ProductContextValue } from '../interfaces/ProductContextValue'
@@ -13,6 +14,7 @@ const ProductContext = createContext<ProductContextValue>({
     error: null,
     deleteProduct: async () => {},
     createProduct: async () => {},
+    updateProduct: async () => {},
 })
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -50,7 +52,7 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
 
     async function deleteProduct(id: number) {
         await deleteProductApi(id)
-        console.log(products)
+
         // After deletion, update the products state locally without refetching
         setProducts((prevProducts) =>
             prevProducts.filter((product) => product.id !== id)
@@ -58,14 +60,32 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
     }
 
     async function createProduct(product: Product) {
-        await createProductApi(product)
-        // After creation, update the products state locally without refetching
-        setProducts((prevProducts) => [...prevProducts, product])
+        const createdProduct: Product = await createProductApi(product)
+        setProducts((prevProducts) => [...prevProducts, createdProduct])
+    }
+
+    async function updateProduct(product: Product) {
+        const updatedProduct = await updateProductApi(product)
+
+        setProducts((prevProducts) =>
+            prevProducts.map((productItem) =>
+                productItem.id === updatedProduct.id
+                    ? updatedProduct
+                    : productItem
+            )
+        )
     }
 
     return (
         <ProductContext.Provider
-            value={{ products, isLoading, error, deleteProduct, createProduct }}
+            value={{
+                products,
+                isLoading,
+                error,
+                deleteProduct,
+                createProduct,
+                updateProduct,
+            }}
         >
             {children}
         </ProductContext.Provider>

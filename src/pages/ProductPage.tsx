@@ -1,13 +1,13 @@
 import { useState } from 'react'
-import CreateProductForm from '../components/CreateProductForm'
+import CreateProductForm from '../components/forms/CreateProductForm'
 import ProductList from '../components/ProductList'
 import '../styling/productPage.css'
 
 export default function ProductPage() {
-    const [showForm, setShowForm] = useState(false)
+    const [showCreateForm, setShowCreateForm] = useState(false)
 
-    function toggleForm() {
-        setShowForm(!showForm)
+    function toggleCreateForm() {
+        setShowCreateForm((prev) => !prev)
     }
 
     return (
@@ -16,11 +16,16 @@ export default function ProductPage() {
                 <h1 className="product-page-header">Product page</h1>
                 <ProductList />
                 <div className="add-product-button-container">
-                    <button className="add-product-button" onClick={toggleForm}>
+                    <button
+                        className="add-product-button"
+                        onClick={toggleCreateForm}
+                    >
                         Add new product
                     </button>
                 </div>
-                {showForm && <CreateProductForm toggleForm={toggleForm} />}
+                {showCreateForm && (
+                    <CreateProductForm toggleCreateForm={toggleCreateForm} />
+                )}
             </div>
         </>
     )

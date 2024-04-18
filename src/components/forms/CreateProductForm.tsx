@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
-import '../styling/createProductForm.css'
-import Product from '../interfaces/Product'
-import { useProductContext } from '../contexts/ProductsContext'
+import '../../styling/createProductForm.css'
+import Product from '../../interfaces/Product'
+import { useProductContext } from '../../contexts/ProductsContext'
 
 export default function CreateProductForm({
-    toggleForm,
+    toggleCreateForm,
 }: {
-    toggleForm: () => void
+    toggleCreateForm: () => void
 }) {
     const { createProduct } = useProductContext()
     const [name, setName] = useState('')
@@ -26,7 +26,7 @@ export default function CreateProductForm({
                 weightInGrams: Number(weight),
             }
             handleCreateProduct(product)
-            toggleForm()
+            toggleCreateForm()
             // Reset form fields after successful submission
             setName('')
             setPrice('')
@@ -76,7 +76,7 @@ export default function CreateProductForm({
                     </button>
                     <button
                         className="cancel-create-product-button"
-                        onClick={toggleForm}
+                        onClick={toggleCreateForm}
                         type="button"
                     >
                         Cancel

@@ -1,34 +1,39 @@
-import Product from '../interfaces/Product'
-
-interface ProductItemProps {
-    product: Product
-    handleDeleteProduct: (id: number) => void
-}
+import { useProductContext } from '../contexts/ProductsContext'
+import { ProductItemProps } from '../interfaces/ProductItemProps'
 
 export default function ProductItem({
     product,
-    handleDeleteProduct,
+    toggleEditClicked,
 }: ProductItemProps) {
-    function handleDeleteClick() {
-        handleDeleteProduct(product.id)
+    const { deleteProduct } = useProductContext()
+
+    function handleDeleteClicked(id: number) {
+        deleteProduct(id)
     }
 
     return (
         <>
-            <tr className="table-row" key={product.id}>
+            <tr className="table-row">
                 <td>{product.name}</td>
                 <td>{product.price}</td>
                 <td>{product.weightInGrams}</td>
                 <td>
                     <button
                         className="table-button"
-                        onClick={handleDeleteClick}
+                        onClick={() =>
+                            handleDeleteClicked(product.id as number)
+                        }
                     >
                         Delete
                     </button>
                 </td>
                 <td>
-                    <button className="table-button">Edit</button>
+                    <button
+                        className="table-button"
+                        onClick={toggleEditClicked}
+                    >
+                        Edit
+                    </button>
                 </td>
             </tr>
         </>

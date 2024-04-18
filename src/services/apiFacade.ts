@@ -16,11 +16,7 @@ export async function deleteProductApi(id: number): Promise<void> {
 
     if (response.status == 409) {
         throw new Error('Cannot delete product with active orders')
-    } else
-        console.log(
-            `Deleted product ID: ${id}`,
-            await handleHttpErrors(response)
-        )
+    } else return await handleHttpErrors(response)
 }
 
 export async function createProductApi(product: Product) {
@@ -28,8 +24,21 @@ export async function createProductApi(product: Product) {
     const response = await fetch(`${API_URL}/products`, options)
 
     if (response.status == 400) {
-        throw new Error('Invalid product data, name already exists/ID provided')
+        throw new Error(
+            'Invalid product data, name already exists or ID provided'
+        )
     } else {
-        console.log('Created product:', await handleHttpErrors(response))
+        return await handleHttpErrors(response)
+    }
+}
+
+export async function updateProductApi(product: Product) {
+    const options = makeOptions('PUT', product)
+    const response = await fetch(`${API_URL}/products/${product.id}`, options)
+
+    if (response.status == 400) {
+        throw new Error('Name already exists')
+    } else {
+        return await handleHttpErrors(response)
     }
 }
