@@ -2,7 +2,7 @@ import { API_URL } from '../settings'
 import Product from '../interfaces/Product'
 import { handleHttpErrors, makeOptions } from './fetchUtils'
 
-export async function getProducts(): Promise<Product[]> {
+export async function getProductsApi(): Promise<Product[]> {
     const options = makeOptions('GET', null)
     const response = await fetch(`${API_URL}/products`, options)
     const data = await handleHttpErrors(response)
@@ -10,7 +10,7 @@ export async function getProducts(): Promise<Product[]> {
     return data
 }
 
-export async function deleteProduct(id: number): Promise<void> {
+export async function deleteProductApi(id: number): Promise<void> {
     const options = makeOptions('DELETE', null)
     const response = await fetch(`${API_URL}/products/${id}`, options)
 
@@ -23,7 +23,7 @@ export async function deleteProduct(id: number): Promise<void> {
         )
 }
 
-export async function createProduct(product: Product) {
+export async function createProductApi(product: Product) {
     const options = makeOptions('POST', product)
     const response = await fetch(`${API_URL}/products`, options)
 

@@ -1,19 +1,21 @@
 import React, { useState } from 'react'
 import '../styling/createProductForm.css'
 import Product from '../interfaces/Product'
-
-interface CreateProductFormProps {
-    toggleForm: () => void
-    handleCreateProduct: (product: Product) => void
-}
+import { useProductContext } from '../contexts/ProductsContext'
 
 export default function CreateProductForm({
     toggleForm,
-    handleCreateProduct,
-}: CreateProductFormProps) {
+}: {
+    toggleForm: () => void
+}) {
+    const { createProduct } = useProductContext()
     const [name, setName] = useState('')
     const [price, setPrice] = useState('')
     const [weight, setWeight] = useState('')
+
+    function handleCreateProduct(product: Product) {
+        createProduct(product)
+    }
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
