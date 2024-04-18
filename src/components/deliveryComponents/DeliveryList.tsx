@@ -2,9 +2,20 @@ import DeliveryItem from './DeliveryItem'
 import '../../styling/deliveryList.css'
 import { Delivery } from '../../interfaces/Delivery'
 import { useDeliveriesContext } from '../../contexts/DeliveriesContext'
+import { useState } from 'react'
+import DeliveryDetails from './OrderDetails'
 
 export default function DeliveryList() {
     const { deliveries, isLoading, error } = useDeliveriesContext()
+    const [toggleDetails, setToggleDetails] = useState(false)
+    const [deliveryDetails, setDeliveryDetails] = useState<Delivery | null>(
+        null
+    )
+
+    function handleToggleDetails(delivery: Delivery) {
+        setToggleDetails((prev) => !prev)
+        setDeliveryDetails(delivery)
+    }
 
     if (isLoading) {
         return <div>Loading...</div> // Show loading message while data is loading
@@ -32,10 +43,17 @@ export default function DeliveryList() {
                             <DeliveryItem
                                 key={delivery.id}
                                 delivery={delivery}
+                                handleToggleDetails={handleToggleDetails}
                             />
                         ))}
                     </tbody>
                 </table>
+                {toggleDetails && (
+                    <DeliveryDetails
+                        deliveryDetails={deliveryDetails}
+                        setToggleDetails={setToggleDetails}
+                    />
+                )}
             </div>
         </>
     )

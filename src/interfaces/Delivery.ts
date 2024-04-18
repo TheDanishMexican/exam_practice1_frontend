@@ -6,4 +6,5 @@ export interface Delivery {
     fromWarehouse: string
     destination: string
     productOrders: ProductOrder[]
+    totalWeightInKg?: number
 }
