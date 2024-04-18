@@ -4,7 +4,11 @@ import Product from '../interfaces/Product'
 import ProductItem from './ProductItem'
 import '../styling/productList.css'
 
-export default function ProductList() {
+export default function ProductList({
+    productCreated,
+}: {
+    productCreated: boolean
+}) {
     const [products, setProducts] = useState<Product[]>([])
     const [isLoading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null) // Initializing error state as null
@@ -24,10 +28,11 @@ export default function ProductList() {
             }
         }
         fetchData()
-    }, [])
+    }, [productCreated])
 
-    function handleDeleteProduct(id: number) {
-        deleteProduct(id)
+    async function handleDeleteProduct(id: number) {
+        await deleteProduct(id)
+        setProducts(products.filter((product) => product.id !== id))
     }
 
     if (isLoading) {
@@ -37,8 +42,6 @@ export default function ProductList() {
     if (error) {
         return <div>Error: {error}</div> // Show error message if there is an error
     }
-
-    console.log(products)
 
     return (
         <>
@@ -63,11 +66,6 @@ export default function ProductList() {
                         ))}
                     </tbody>
                 </table>
-                <div className="add-product-button-container">
-                    <button className="add-product-button">
-                        Add new product
-                    </button>
-                </div>
             </div>
         </>
     )

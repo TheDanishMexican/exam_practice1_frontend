@@ -30,7 +30,7 @@ export async function handleHttpErrors(response: Response) {
     // it processes and throws an error.
     if (!response.ok) {
         // Parse the JSON from the response to get detailed error information.
-        const errorResponse = await parseJSON(response)
+        const errorResponse = await response.json()
         // Extract the message from the error response or use a default message if not available.
         const message = errorResponse.message
             ? errorResponse.message
@@ -45,11 +45,13 @@ export async function handleHttpErrors(response: Response) {
 // Helper function to safely parse JSON from a response.
 async function parseJSON(response: Response) {
     try {
+        if (response.status === 204) return null // No content (e.g., DELETE request with no response body
         // Attempt to parse the response body as JSON.
         return await response.json()
     } catch (error) {
         // If parsing fails (e.g., if the response body is not valid JSON),
         // throw a new error indicating this issue.
+        console.error('Failed to parse response', error)
         throw new Error('Failed to parse response')
     }
 }
