@@ -5,8 +5,12 @@ import { useState } from 'react'
 import Product from '../interfaces/Product'
 import { EditProductForm } from './forms/EditProductForm'
 
-export default function ProductList() {
-    const { products, isLoading, error } = useProductContext()
+export default function ProductList({
+    filteredProducts,
+}: {
+    filteredProducts: Product[]
+}) {
+    const { isLoading, error } = useProductContext()
     const [productToEdit, setProductToEdit] = useState<Product | null>(null)
 
     function toggleEditClicked(product: Product) {
@@ -35,7 +39,7 @@ export default function ProductList() {
                         </tr>
                     </thead>
                     <tbody>
-                        {products.map((product) => (
+                        {filteredProducts.map((product) => (
                             <ProductItem
                                 key={product.name}
                                 product={product}
@@ -46,6 +50,7 @@ export default function ProductList() {
                         ))}
                     </tbody>
                 </table>
+                {filteredProducts.length === 0 && 'No products found'}
             </div>
             {productToEdit && (
                 <EditProductForm

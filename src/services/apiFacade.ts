@@ -36,9 +36,15 @@ export async function updateProductApi(product: Product) {
     const options = makeOptions('PUT', product)
     const response = await fetch(`${API_URL}/products/${product.id}`, options)
 
-    if (response.status == 400) {
-        throw new Error('Name already exists')
-    } else {
-        return await handleHttpErrors(response)
-    }
+    return await handleHttpErrors(response)
+}
+
+export async function searchProductsByNameApi(name: string): Promise<Product> {
+    const options = makeOptions('GET', null)
+    const encodedName = encodeURIComponent(name)
+    const response = await fetch(
+        `${API_URL}/products/name/${encodedName}`,
+        options
+    )
+    return await handleHttpErrors(response)
 }

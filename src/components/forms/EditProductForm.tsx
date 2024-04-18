@@ -1,19 +1,50 @@
 import { useState } from 'react'
 import '../../styling/editProductForm.css'
 import { EditProductFormProps } from '../../interfaces/EditProductFormProps'
+import { useProductContext } from '../../contexts/ProductsContext'
+import Product from '../../interfaces/Product'
 
 export function EditProductForm({
     product,
     toggleEditClicked,
 }: EditProductFormProps) {
+    const { updateProduct } = useProductContext()
     const [name, setName] = useState(product.name)
     const [price, setPrice] = useState(product.price)
     const [weight, setWeight] = useState(product.weightInGrams)
 
+    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault()
+
+        // Check if any values have changed
+        if (
+            name === product.name &&
+            price === product.price &&
+            weight === product.weightInGrams
+        ) {
+            toggleEditClicked(product)
+            return // Exit the function early if no changes
+        }
+
+        try {
+            const updatedProduct: Product = {
+                id: product.id,
+                name: name,
+                price: price,
+                weightInGrams: weight,
+            }
+            updateProduct(updatedProduct)
+
+            toggleEditClicked(product)
+        } catch (error) {
+            console.error('Failed to update product:', error)
+        }
+    }
+
     return (
         <>
             <div className="edit-product-form-container">
-                <form className="edit-product-form">
+                <form className="edit-product-form" onSubmit={handleSubmit}>
                     <h3 className="edit-product-form-header">Edit product</h3>
                     <label htmlFor="name">Name:</label>
                     <input
